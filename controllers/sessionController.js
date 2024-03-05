@@ -3,7 +3,7 @@ const router = require('express').Router()
 const db = require('../models');
 
 router.get('/new', (req, res) => {
-    res.render('sessions/new.ejs', { 
+    res.render('sessions/new', { 
         currentUser: req.session.currentUser 
     })
 })
@@ -34,4 +34,4 @@ router.delete('/', (req, res)=>{
     })
 })
 
-module.exports = router
+module.exports = router;
