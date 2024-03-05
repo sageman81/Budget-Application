@@ -1,0 +1,23 @@
+{
+  "name": "budget-app",
+  "version": "1.0.0",
+  "description": "##The Personal Budget Tracker is a full-stack web application designed to help individuals manage their personal finances. It allows users monitor their income, expenses, and savings. Built with Node.js, Express, Mongoose, EJS, and CSS, this project adheres to the MVC architectural pattern and is designed with a focus on user-friendly experiences and responsive design.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.9",
+    "env": "^0.0.2",
+    "express": "^4.18.3",
+    "express-session": "^1.18.0",
+    "mongoose": "^8.2.1",
+    "morgan": "^1.10.0"
+  }
+}
