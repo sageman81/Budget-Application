@@ -33,7 +33,16 @@ app.get('/', (req, res) => {
 app.get('/signup', (req, res) => {
     res.render('newUser'); // Assumes newUser.ejs is located directly under the views directory
 });
-  
+
+app.get('/dashboard', (req, res) => {
+    if (req.session.userId) { // Assuming you set this session variable upon login
+        res.render('dashboard', { currentUser: req.session });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+
 // Route for handling user registration
 app.post('/users', async (req, res) => {
     try {
