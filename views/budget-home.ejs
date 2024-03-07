@@ -1,11 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget App</title>
-</head>
-<body>
-    <h1>Welcome to Budget App!</h1>
-</body>
-</html>
+<%- include('partials/header') %> <!-- Including the header partial -->
+
+<div class="container">
+    <h1>Welcome to the Budget App!</h1>
+    <p>Track your expenses and manage your finances with ease.</p>
+    <div>
+        <a href="/login" class="button">Login</a>
+        <a href="/signup" class="button">Sign Up</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %> <!-- Including the footer partial -->
+
+

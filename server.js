@@ -12,6 +12,9 @@ app.use(express.json());
 // Setting up EJS as the view engine
 app.set('view engine', 'ejs');
 
+app.use(express.static('public'));
+
+
 // Configure session middleware before any route that requires session data
 app.use(session({
     secret: 'your_secret_key', // Use a real secret in production
@@ -26,12 +29,13 @@ app.use('/', sessionController);
 
 // Root route to welcome users
 app.get('/', (req, res) => {
-    res.send('Welcome to the Budget App!');
+    res.render('budget-home');
 });
+
 
 // Route to render the sign-up form
 app.get('/signup', (req, res) => {
-    res.render('newUser'); // Assumes newUser.ejs is located directly under the views directory
+    res.render('users/newUser'); // Assumes newUser.ejs is located directly under the views directory
 });
 
 app.get('/dashboard', (req, res) => {
@@ -81,3 +85,4 @@ app.post('/transactions', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
