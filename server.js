@@ -8,6 +8,7 @@ const { Transaction } = require('./models/index');
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Setting up EJS as the view engine
 app.set('view engine', 'ejs');
