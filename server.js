@@ -39,13 +39,26 @@ app.get('/signup', (req, res) => {
     res.render('users/newUser'); // Assumes newUser.ejs is located directly under the views directory
 });
 
-app.get('/dashboard', (req, res) => {
-    if (req.session.userId) { // Assuming you set this session variable upon login
-        res.render('dashboard', { currentUser: req.session });
-    } else {
-        res.redirect('/login');
+// app.get('/dashboard', (req, res) => {
+//     if (req.session.userId) { // Assuming you set this session variable upon login
+//         res.render('dashboard', { currentUser: req.session });
+//     } else {
+//         res.redirect('/login');
+//     }
+// });
+
+// Example of formatting for the dashboard route handler in server.js or routes/dashboardRoutes.js
+app.get('/dashboard', async (req, res) => {
+    try {
+        // Example of fetching transactions from the database
+        const transactions = await Transaction.find({ user: req.session.userId });
+        res.render('dashboard', { transactions });
+    } catch (error) {
+        console.error("Error fetching transactions:", error);
+        res.status(500).render('dashboard', { error: "Failed to load transactions." });
     }
 });
+
 
 
 // Route for handling user registration

@@ -1,13 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-</head>
-<body>
-    <h1>Welcome, <%= currentUser.username %>!</h1>
-    <p>This is your dashboard.</p>
-    <!-- Additional dashboard content here -->
-</body>
-</html>
+<%- include('partials/header') %>
+
+<h1>Welcome to Your Dashboard!</h1>
+
+<h2>Recent Transactions</h2>
+<ul>
+    <% if (transactions && transactions.length > 0) { %>
+        <% transactions.forEach(function(transaction) { %>
+            <li><%= transaction.description %> - <%= transaction.amount %> (<%= transaction.type %>)</li>
+        <% }); %>
+    <% } else { %>
+        <p>No transactions found.</p>
+    <% } %>
+</ul>
+
+<h2>Add New Transaction</h2>
+<form action="/transactions" method="POST">
+    <input type="text" name="description" placeholder="Description" required>
+    <input type="number" name="amount" placeholder="Amount" required>
+    <select name="type">
+        <option value="Income">Income</option>
+        <option value="Expense">Expense</option>
+    </select>
+    <input type="text" name="category" placeholder="Category" required>
+    <button type="submit">Add Transaction</button>
+</form>
+
+<%- include('partials/footer') %>
+

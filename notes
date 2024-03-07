@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, <%= currentUser.username %>!</h1>
+    <p>This is your dashboard.</p>
+    <!-- Additional dashboard content here -->
+</body>
+</html>
+
+
+
+
+my-budget-app/
+├── controllers/
+    |-isAuthenticated.js
+    |-sessionController.js
+│   ├── transactions.js
+│   └── user.Controller.js
+├── models/
+    |-index.js
+    |-seed.js
+│   ├── Transactions.js
+│   └── user.js
+├── views/
+│   ├── partials/
+│   │   ├── header.ejs
+│   │   └── footer.ejs
+│   ├── dashboard.ejs
+│   └── budget-home.ejs
+├── public/
+│   ├── css/
+│   │   └── styles.css
+│   
+│   
+
+├── .env
+└── server.js
