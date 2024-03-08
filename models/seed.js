@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const Transaction = require('./Transactions'); // Adjust path as necessary
+const Transaction = require('./Transaction'); // Adjust path as necessary
 const mongodbURI = process.env.MONGODBURI;
 
 mongoose.connect(mongodbURI, { useNewUrlParser: true, useUnifiedTopology: true });
