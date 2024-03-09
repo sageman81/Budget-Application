@@ -14,7 +14,7 @@
 </ul>
 
 <h2>Add New Transaction</h2>
-<form action="/transactions" method="POST">
+<!-- <form action="/transactions" method="POST">
     <input type="text" name="description" placeholder="Description" required>
     <input type="number" name="amount" placeholder="Amount" required>
     <select name="type">
@@ -23,7 +23,24 @@
     </select>
     <input type="text" name="category" placeholder="Category" required>
     <button type="submit">Add Transaction</button>
-</form>
+</form> -->
+<!-- Transaction Form -->
+<form id="transactionForm">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="number" name="amount" placeholder="Amount" required>
+    <input type="text" name="category" placeholder="Category" required>
+    <input type="date" name="date" required>
+    <button type="submit">Add Transaction</button>
+  </form>
+  <div id="message"></div>
+  
+  <!-- Transactions List -->
+  <ul id="transactionsList">
+    <% transactions.forEach(function(transaction) { %>
+      <li><%= transaction.name %> - <%= transaction.amount %></li>
+    <% }); %>
+  </ul>
+  
 
 <%- include('partials/footer') %>
 
