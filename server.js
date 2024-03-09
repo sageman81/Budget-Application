@@ -33,6 +33,23 @@ app.get('/', (req, res) => {
     res.render('budget-home');
 });
 
+// Route for displaying transactions
+app.get('/transactions', async (req, res) => {
+    if (!req.session.userId) {
+        // Redirect user to login page if not logged in
+        return res.redirect('/login');
+    }
+
+    try {
+        // Fetch transactions for the logged-in user
+        const transactions = await Transaction.find({ user: req.session.userId });
+        // Render a view to display transactions, assuming you have a template called 'transactions.ejs'
+        res.render('transactions', { transactions });
+    } catch (error) {
+        console.error("Error fetching transactions:", error);
+        res.status(500).send('Error fetching transactions');
+    }
+});
 
 // Route to render the sign-up form
 app.get('/signup', (req, res) => {
