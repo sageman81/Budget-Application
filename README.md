@@ -71,3 +71,20 @@ https://docs.google.com/presentation/d/1q5UiSH57WUP27Z48qD4ijyEX0fnf__prRzAOotFR
 # Budget-Application
 Personal Budget App
 
+
+ChatGPT
+Certainly! Below is a sample section for your README that discusses the technologies used in your budget app. Feel free to adjust it according to your specific implementation details or any additional technologies you might have incorporated.
+
+Technologies Used
+
+This budget tracking application is built with a range of technologies that enable its full-stack capabilities, from user authentication to real-time data manipulation and storage. Here's an overview of the primary technologies and tools used in the development of this application:
+
+Node.js: A JavaScript runtime built on Chrome's V8 JavaScript engine, used for creating the server-side application. Node.js allows for executing JavaScript code outside of a browser, making it ideal for building scalable and fast network applications.
+Express.js: A web application framework for Node.js, designed for building web applications and APIs. It simplifies the server creation process by providing a robust set of features for web and mobile applications. In this project, Express.js is used to handle HTTP requests, routing, and middleware integration.
+MongoDB: A NoSQL database known for its flexibility and scalability. It stores data in flexible, JSON-like documents, meaning data structure can change over time. This application uses MongoDB to store user and transaction data, leveraging its powerful querying and aggregation features for managing financial records.
+Mongoose: An Object Data Modeling (ODM) library for MongoDB and Node.js. It provides a straightforward, schema-based solution to model application data. It includes built-in type casting, validation, query building, and business logic hooks. Mongoose is used in this project to model and manage application data efficiently.
+EJS (Embedded JavaScript templates): A templating engine used to generate HTML markup with plain JavaScript. EJS simplifies the creation of dynamic server-side page content by embedding JavaScript directly into HTML templates. This project uses EJS to render views based on server-side logic and data.
+bcrypt.js: A library to help hash passwords. In this application, bcrypt.js is used to securely store user passwords. Before saving a user's password to the database, it is hashed to ensure security and privacy.
+express-session: A middleware for Express.js that enables session management. It stores session data on the server and allows the application to maintain state across requests. This project uses express-session to handle user authentication and session management, ensuring that users can interact with their personalized data securely.
+CSS & Bootstrap (optional): While CSS provides the basic style definitions for the application's UI, Bootstrap (or any other CSS framework you might have used) offers a comprehensive set of styling options, responsive grid systems, and pre-designed components for enhancing the visual appeal and user experience of the application.
+By leveraging these technologies, the budget tracking application offers a seamless and secure experience for managing personal finances, allowing users to add, view, edit, and delete transaction records associated with their accounts.
