@@ -41,6 +41,43 @@
     <% }); %>
   </ul>
   
+  <script>
+    document.getElementById('transactionForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent the default form submission
+      
+      const formData = new FormData(this);
+      const data = {};
+      for (let [key, value] of formData.entries()) {
+        data[key] = value;
+      }
+      
+      fetch('/transactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('message').innerText = 'Transaction added successfully!';
+        
+        // Optional: Update the transactions list directly without reloading
+        // For a more dynamic approach, append the new transaction to the list
+        // This assumes you have a way to format the transaction into list item HTML
+        // const newTransactionHtml = `<li>${data.name} - ${data.amount}</li>`;
+        // document.getElementById('transactionsList').innerHTML += newTransactionHtml;
+    
+        // Simpler alternative: reload the dashboard to see the new transaction
+        window.location.href = '/dashboard';
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+    </script>
+    
+
 
 <%- include('partials/footer') %>
 

@@ -1,0 +1,9 @@
+<form action="/transactions/<%= transaction._id %>?_method=PUT" method="POST">
+    <!-- Add form fields pre-filled with the transaction's current values -->
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="name" value="<%= transaction.name %>">
+    </div>
+    <!-- Repeat for other fields like amount, date, category -->
+    <button type="submit" class="btn btn-primary">Update Transaction</button>
+</form>

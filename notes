@@ -35,8 +35,13 @@ my-budget-app/
 ├── public/
 │   ├── css/
 │   │   └── styles.css
-│   
-│   
+│   sessions
+        |-login.ejs
+        |-new.ejs
+│   users
+        |-newUser.ejs
+    |budget-home.ejs
+    dashboard.ejs
 
 ├── .env
 └── server.js

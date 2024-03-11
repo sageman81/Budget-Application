@@ -1,5 +1,7 @@
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session'); // Ensure this is required for session management
+const methodOverride = require('method-override');
 const app = express();
 const PORT = 3000;
 
@@ -12,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Setting up EJS as the view engine
 app.set('view engine', 'ejs');
-
+app.use(methodOverride('_method')); // for forms that send PUT/DELETE requests
 app.use(express.static('public'));
 
 
@@ -111,6 +113,29 @@ app.post('/transactions', async (req, res) => {
         res.status(400).send(error);
     }
 });
+
+app.put('/transactions/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Transaction.findByIdAndUpdate(id, req.body, { new: true });
+        res.redirect('/transactions');
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
+
+
+app.delete('/transactions/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Transaction.findByIdAndDelete(id);
+        res.redirect('/transactions');
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
 
 // Starting the server
 app.listen(PORT, () => {
