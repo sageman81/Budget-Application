@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10; // Define the number of salt rounds for hashing
 const router = require('express').Router();
-const User = require('../models/User'); // Adjust the path as necessary
-
+const User = require('../models/user'); // Adjust the path as necessary
+const Transaction = require('../models/transaction');
 // Display the signup form
 router.get('/signup', (req, res) => {
     res.render('users/newUser'); // Assuming 'newUser.ejs' is in 'views/users/'
@@ -74,6 +74,28 @@ router.post('/login', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+// Example of a route to create a new transaction
+router.post('/transactions', async (req, res) => {
+    // Assuming you receive description, amount, category, and user from the request body
+    const { description, amount, category, user } = req.body;
+  
+    try {
+      const newTransaction = new Transaction({
+        description,
+        amount,
+        category,
+        user, // This could be req.session.userId if you're associating transactions with users
+      });
+  
+      const savedTransaction = await newTransaction.save();
+      res.status(201).json(savedTransaction);
+    } catch (error) {
+      console.error("Error saving transaction:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
 
 // Log out the user
 router.get('/logout', (req, res) => {

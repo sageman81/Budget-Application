@@ -1,35 +1,28 @@
+// models/seed.js
 require('dotenv').config();
+const { connectDB, User, Transaction } = require('.');
 const mongoose = require('mongoose');
-const Transaction = require('./Transaction'); // Adjust path as necessary
-const mongodbURI = process.env.MONGODBURI;
 
-mongoose.connect(mongodbURI, { useNewUrlParser: true, useUnifiedTopology: true });
+connectDB();
 
-const seedTransactions = [
-  {
-    name: 'Salary', // Align with your Transaction model fields
-    amount: 3000,
-    date: new Date(),
-    category: 'Salary',
-  },
-  {
-    name: 'Grocery Shopping',
-    amount: -150,
-    date: new Date(),
-    category: 'Groceries',
-  }
-];
+const seedDB = async () => {
+    await User.deleteMany({});
+    await Transaction.deleteMany({});
 
-const db = mongoose.connection;
+    const user = await User.create({
+        username: 'demoUser',
+        password: 'password123',
+    });
 
-db.on('open', async () => {
-    try {
-        await Transaction.deleteMany({});
-        await Transaction.insertMany(seedTransactions);
-        console.log("Database seeded successfully.");
-        process.exit();
-    } catch (error) {
-        console.error("Error seeding the database:", error);
-        process.exit(1);
-    }
+    await Transaction.create([
+        { name: 'Salary', amount: 5000, category: 'Income', user: user._id },
+        { name: 'Rent', amount: -1500, category: 'Expense', user: user._id },
+        { name: 'Groceries', amount: -300, category: 'Expense', user: user._id },
+    ]);
+
+    console.log('Database seeded successfully!');
+};
+
+seedDB().then(() => {
+    mongoose.connection.close();
 });

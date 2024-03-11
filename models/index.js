@@ -1,22 +1,21 @@
-require('dotenv').config();
+// models/index.js
 const mongoose = require('mongoose');
-const mongodbURI = process.env.MONGODBURI; // Ensure this matches your .env file's variable name
+const User = require('./user');
+const Transaction = require('./transaction'); 
 
-// Use the variable you defined above to keep consistency
-mongoose.connect(mongodbURI, {}).then(() => console.log('MongoDB connected...'))
-.catch(err => console.error(err));
-
-const db = mongoose.connection;
-
-db.on('connected', () => {
-    console.log(`Connected to MongoDB ${db.name} at ${db.host}:${db.port}`);
-});
-
-db.on('error', (error) => {
-    console.error(`MongoDB connection error: ${error}`);
-});
+const connectDB = () => {
+    mongoose.connect(process.env.MONGODB_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
+    .then(() => console.log('MongoDB connected'))
+    .catch((err) => console.error('MongoDB connection error:', err));
+};
 
 module.exports = {
-    Transaction: require('./transactions') // Adjust if you have other models
+    connectDB,
+    User,
+    Transaction,
 };
+
 

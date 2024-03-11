@@ -1,47 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-</head>
-<body>
-    <h1>Welcome, <%= currentUser.username %>!</h1>
-    <p>This is your dashboard.</p>
-    <!-- Additional dashboard content here -->
-</body>
-</html>
-
-In SEED.js i changed /Transactions to /Transaction on line 3
-
-
-my-budget-app/
-├── controllers/
+Budget-App/
+|-- controllers/
     |-isAuthenticated.js
-    |-sessionController.js
-│   ├── transactions.js
-│   └── user.Controller.js
-├── models/
-    |-index.js
-    |-seed.js
-│   ├── Transactions.js
-│   └── user.js
-├── views/
-│   ├── partials/
-│   │   ├── header.ejs
-│   │   └── footer.ejs
-│   ├── dashboard.ejs
-│   └── budget-home.ejs
-├── public/
-│   ├── css/
-│   │   └── styles.css
-│   sessions
-        |-login.ejs
-        |-new.ejs
-│   users
-        |-newUser.ejs
-    |budget-home.ejs
-    dashboard.ejs
+|   |-- sessionController.js
+|   |-- transactionsController.js
+    |-user.controller.js
+|-- models/
+|   |-- user.js
+|   |-- transaction.js
+|-- views/
+|   |-- sessions/
+|   |   |-- login.ejs
+|   |   |-- newUser.ejs
+|   |-- transactions/
+|   |   |-- new.ejs
+|   |   |-- edit.ejs
+        
+|   |-- partials/
+|   |   |-- header.ejs
+|   |   |-- footer.ejs
+        |--nav.ejs
+|   |-- dashboard.ejs
+|   |-- budget-home.ejs
+    
+|-- public/
+|   |-- css/
+|   |   |-- styles.css
+|-- .env
+|-- server.js
 
-├── .env
-└── server.js

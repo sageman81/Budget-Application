@@ -3,10 +3,23 @@
 <h1>Welcome to Your Dashboard!</h1>
 
 <h2>Recent Transactions</h2>
-<ul>
+<ul class="transactions-list">
     <% if (transactions && transactions.length > 0) { %>
         <% transactions.forEach(function(transaction) { %>
-            <li><%= transaction.description %> - <%= transaction.amount %> (<%= transaction.type %>)</li>
+            <li>
+                <%= transaction.name %> - 
+                <span class="<%= transaction.amount >= 0 ? 'income' : 'expense' %> transaction-amount">
+                    <%= transaction.amount %>
+                </span>
+                <div class="transaction-meta">
+                    <!-- Edit Button -->
+                    <a href="/transactions/edit/<%= transaction._id %>" class="edit-btn">Edit</a>
+                    <!-- Delete Button -->
+                    <form action="/transactions/<%= transaction._id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </div>
+            </li>
         <% }); %>
     <% } else { %>
         <p>No transactions found.</p>
@@ -14,70 +27,42 @@
 </ul>
 
 <h2>Add New Transaction</h2>
-<!-- <form action="/transactions" method="POST">
-    <input type="text" name="description" placeholder="Description" required>
-    <input type="number" name="amount" placeholder="Amount" required>
-    <select name="type">
-        <option value="Income">Income</option>
-        <option value="Expense">Expense</option>
-    </select>
-    <input type="text" name="category" placeholder="Category" required>
-    <button type="submit">Add Transaction</button>
-</form> -->
-<!-- Transaction Form -->
 <form id="transactionForm">
     <input type="text" name="name" placeholder="Name" required>
     <input type="number" name="amount" placeholder="Amount" required>
     <input type="text" name="category" placeholder="Category" required>
     <input type="date" name="date" required>
     <button type="submit">Add Transaction</button>
-  </form>
-  <div id="message"></div>
-  
-  <!-- Transactions List -->
-  <ul id="transactionsList">
-    <% transactions.forEach(function(transaction) { %>
-      <li><%= transaction.name %> - <%= transaction.amount %></li>
-    <% }); %>
-  </ul>
-  
-  <script>
-    document.getElementById('transactionForm').addEventListener('submit', function(e) {
-      e.preventDefault(); // Prevent the default form submission
-      
-      const formData = new FormData(this);
-      const data = {};
-      for (let [key, value] of formData.entries()) {
-        data[key] = value;
-      }
-      
-      fetch('/transactions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('message').innerText = 'Transaction added successfully!';
-        
-        // Optional: Update the transactions list directly without reloading
-        // For a more dynamic approach, append the new transaction to the list
-        // This assumes you have a way to format the transaction into list item HTML
-        // const newTransactionHtml = `<li>${data.name} - ${data.amount}</li>`;
-        // document.getElementById('transactionsList').innerHTML += newTransactionHtml;
-    
-        // Simpler alternative: reload the dashboard to see the new transaction
-        window.location.href = '/dashboard';
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    });
-    </script>
-    
-
+</form>
+<div id="message"></div>
 
 <%- include('partials/footer') %>
+
+<script>
+document.getElementById('transactionForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    const formData = new FormData(this);
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+        data[key] = value;
+    }
+
+    fetch('/transactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        credentials: 'include' // Include cookies with the request
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('message').innerText = 'Transaction added successfully!';
+        // Reload to show the new transaction in the list
+        window.location.href = '/dashboard';
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+});
+</script>
 

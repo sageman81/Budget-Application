@@ -1,9 +1,16 @@
 /* public/styles.css */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .header, .footer {
+        padding: 0.5em;
+    }
+}
+
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
 }
 
 .container {
@@ -34,4 +41,91 @@ body {
     border-radius: 5px;
     padding: 10px 15px;
     cursor: pointer;
+}
+
+.button-primary:hover, .button-danger:hover {
+    opacity: 0.8;
+}
+
+input[type="text"], input[type="password"], input[type="number"], input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+form {
+    margin: 20px 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.transactions-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.transactions-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #eee;
+    padding: 10px 15px;
+}
+
+.transactions-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.transaction-amount {
+    font-weight: bold;
+}
+
+.income {
+    color: #4CAF50;
+}
+
+.expense {
+    color: #F44336;
+}
+
+.transaction-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.transaction-meta a, .transaction-meta form {
+    display: inline-block;
+}
+
+.edit-btn, .delete-btn {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #FFC107;
+}
+
+.delete-btn {
+    background-color: #F44336;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+.edit-btn:hover {
+    background-color: #ffb300;
 }

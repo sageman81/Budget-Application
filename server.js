@@ -1,144 +1,167 @@
 require('dotenv').config();
 const express = require('express');
-const session = require('express-session'); // Ensure this is required for session management
+const session = require('express-session');
 const methodOverride = require('method-override');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Importing the Transaction model correctly from the models directory
-const { Transaction } = require('./models/index');
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB connected...'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-// Middleware to parse JSON bodies
+// Import models
+const { Transaction, User } = require('./models/index');
+
+// Middleware setup
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
+app.use(express.static('public'));
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: 'auto', httpOnly: true }
+}));
 
 // Setting up EJS as the view engine
 app.set('view engine', 'ejs');
-app.use(methodOverride('_method')); // for forms that send PUT/DELETE requests
-app.use(express.static('public'));
 
 
-// Configure session middleware before any route that requires session data
-app.use(session({
-    secret: 'your_secret_key', // Use a real secret in production
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: !true } // Set secure to true if using https (Consider environment-based logic)
-}));
-
-// Include your session controller after session middleware setup
-const sessionController = require('./controllers/sessionController');
-app.use('/', sessionController); 
 
 // Root route to welcome users
 app.get('/', (req, res) => {
-    res.render('budget-home');
+    res.redirect('/dashboard');
 });
 
-// Route for displaying transactions
-app.get('/transactions', async (req, res) => {
+// Dashboard Route
+app.get('/dashboard', async (req, res) => {
     if (!req.session.userId) {
-        // Redirect user to login page if not logged in
         return res.redirect('/login');
     }
 
     try {
-        // Fetch transactions for the logged-in user
-        const transactions = await Transaction.find({ user: req.session.userId });
-        // Render a view to display transactions, assuming you have a template called 'transactions.ejs'
-        res.render('transactions', { transactions });
-    } catch (error) {
-        console.error("Error fetching transactions:", error);
-        res.status(500).send('Error fetching transactions');
-    }
-});
-
-// Route to render the sign-up form
-app.get('/signup', (req, res) => {
-    res.render('users/newUser'); // Assumes newUser.ejs is located directly under the views directory
-});
-
-// app.get('/dashboard', (req, res) => {
-//     if (req.session.userId) { // Assuming you set this session variable upon login
-//         res.render('dashboard', { currentUser: req.session });
-//     } else {
-//         res.redirect('/login');
-//     }
-// });
-
-// Example of formatting for the dashboard route handler in server.js or routes/dashboardRoutes.js
-app.get('/dashboard', async (req, res) => {
-    try {
-        // Example of fetching transactions from the database
         const transactions = await Transaction.find({ user: req.session.userId });
         res.render('dashboard', { transactions });
     } catch (error) {
         console.error("Error fetching transactions:", error);
-        res.status(500).render('dashboard', { error: "Failed to load transactions." });
+        res.status(500).send("Error loading the dashboard");
     }
+});
+
+// Login and registration routes 
+// GET route for displaying the login form
+app.get('/login', (req, res) => {
+    res.render('sessions/login'); 
 });
 
 
 
-// Route for handling user registration
-app.post('/users', async (req, res) => {
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
     try {
-      const { username, password } = req.body;
-      // Hash the password and save the new user to the database here
-      // Redirect to a login page, or possibly auto-login the user and redirect to their dashboard
-      res.redirect('/login'); // Ensure you have a route handling '/login'
+        const user = await User.findOne({ username });
+        if (user && await bcrypt.compare(password, user.password)) {
+            req.session.userId = user._id; // Establishing a session
+            res.redirect('/dashboard');
+        } else {
+            res.status(401).send('Invalid credentials');
+        }
     } catch (error) {
-      res.status(500).send('Server error');
+        console.error("Error during login:", error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
-// Placeholder route for displaying transactions - you'll update this as needed
-app.get('/budget', (req, res) => {
-    res.send('Transactions placeholder');
+
+// Logout Route
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.error("Error logging out:", err);
+            return res.redirect('/dashboard');
+        }
+        res.redirect('/login');
+    });
 });
 
-// Route for creating a new transaction
+// Create New Transaction
+// Create New Transaction
 app.post('/transactions', async (req, res) => {
-    try {
-        const transaction = new Transaction({
-            name: req.body.name,
-            amount: req.body.amount,
-            date: req.body.date,
-            category: req.body.category,
-        });
+    if (!req.session.userId) {
+        return res.status(401).send('Unauthorized');
+    }
 
-        const savedTransaction = await transaction.save();
-        res.status(201).send(savedTransaction);
+    try {
+        const { name, amount, date, category } = req.body;
+        const newTransaction = new Transaction({ name, amount, date, category, user: req.session.userId });
+        await newTransaction.save();
+        // Send back a JSON response
+        res.status(201).json({ message: 'Transaction added successfully', transaction: newTransaction });
     } catch (error) {
-        res.status(400).send(error);
+        console.error("Error saving transaction:", error);
+        res.status(400).send('Error saving transaction');
     }
 });
 
+
+// Edit Transaction View
+app.get('/transactions/edit/:id', async (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
+
+    try {
+        const transaction = await Transaction.findOne({ _id: req.params.id, user: req.session.userId });
+        if (!transaction) {
+            return res.status(404).send('Transaction not found');
+        }
+        res.render('transactions/edit', { transaction });
+    } catch (error) {
+        console.error("Error fetching transaction:", error);
+        res.status(500).send('Error loading edit form');
+    }
+});
+
+// Update Transaction
 app.put('/transactions/:id', async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).send('Unauthorized');
+    }
+
     try {
         const { id } = req.params;
-        await Transaction.findByIdAndUpdate(id, req.body, { new: true });
-        res.redirect('/transactions');
+        const { name, amount, date, category } = req.body;
+        await Transaction.findOneAndUpdate({ _id: id, user: req.session.userId }, { name, amount, date, category }, { new: true });
+        res.redirect('/dashboard');
     } catch (error) {
-        res.status(400).send(error);
+        console.error("Error updating transaction:", error);
+        res.status(400).send('Error updating transaction');
     }
 });
 
-
-
+// Delete Transaction
 app.delete('/transactions/:id', async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).send('Unauthorized');
+    }
+
     try {
         const { id } = req.params;
-        await Transaction.findByIdAndDelete(id);
-        res.redirect('/transactions');
+        await Transaction.findOneAndDelete({ _id: id, user: req.session.userId });
+        res.redirect('/dashboard');
     } catch (error) {
-        res.status(400).send(error);
+        console.error("Error deleting transaction:", error);
+        res.status(400).send('Error deleting transaction');
     }
 });
 
+//login
 
 // Starting the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
