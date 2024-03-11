@@ -159,7 +159,7 @@ app.delete('/transactions/:id', async (req, res) => {
     }
 });
 
-//login
+
 
 // Starting the server
 app.listen(PORT, () => {

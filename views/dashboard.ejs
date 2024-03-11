@@ -40,7 +40,7 @@
 
 <script>
 document.getElementById('transactionForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // Prevent the default form submission
+    e.preventDefault(); 
 
     const formData = new FormData(this);
     const data = {};
@@ -52,12 +52,12 @@ document.getElementById('transactionForm').addEventListener('submit', function(e
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-        credentials: 'include' // Include cookies with the request
+        credentials: 'include' 
     })
     .then(response => response.json())
     .then(data => {
         document.getElementById('message').innerText = 'Transaction added successfully!';
-        // Reload to show the new transaction in the list
+       
         window.location.href = '/dashboard';
     })
     .catch((error) => {
