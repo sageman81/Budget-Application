@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const User = require('./user');
 const Transaction = require('./transaction'); 
-
+const Category = require('./category');
 const connectDB = () => {
     mongoose.connect(process.env.MONGODB_URI, {
         useNewUrlParser: true,
@@ -12,10 +12,13 @@ const connectDB = () => {
     .catch((err) => console.error('MongoDB connection error:', err));
 };
 
+
+
 module.exports = {
     connectDB,
     User,
     Transaction,
+    Category
 };
 
 

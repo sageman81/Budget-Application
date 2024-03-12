@@ -1,0 +1,10 @@
+<%- include('../partials/header') %>
+
+<h1>Add New Category</h1>
+
+<form action="/categories" method="POST">
+    <input type="text" name="categoryName" placeholder="Enter category name" required>
+    <button type="submit">Add Category</button>
+</form>
+
+<%- include('../partials/footer') %>

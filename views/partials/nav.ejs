@@ -4,10 +4,13 @@
       <ul>
         
         <li><a href="/">Home</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
         <li><a href="/about">About us</a></li>
         <% if(currentUser){ %>
         <li>Welcome <%= currentUser.username %></li>
         <li><a href="/transactions/new">Create a New Transaction</a></li>
+        <li><a href="/categories">Manage Categories</a></li>
+        <li><a href="/categories/new">Add New Category</a></li>
         <li>
           <form action="/sessions/?_method=DELETE" method="POST">
             <input type="submit" value="Logout" />
