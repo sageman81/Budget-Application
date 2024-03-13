@@ -1,3 +1,25 @@
-<h1>Categories</h1>
-<a href="/categories/new">Add New Category</a>
+<!-- <h1>Categories</h1>
+<a href="/categories/new">Add New Category</a> -->
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Category List</title>
+</head>
+<body>
+    <h1>Categories</h1>
+    <ul>
+        <% categories.forEach(function(category) { %>
+            <li>
+                <%= category.name %>
+                <!-- Link to Edit Form -->
+                <a href="/categories/<%= category._id %>/edit">Edit</a>
+                <!-- Delete Button -->
+                <form action="/categories/<%= category._id %>?_method=DELETE" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>

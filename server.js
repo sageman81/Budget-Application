@@ -37,13 +37,14 @@ app.set('view engine', 'ejs');
 //import controllers
 const transactionsController = require('./controllers/transactionsController');
 const sessionController = require('./controllers/sessionController');
+const categoryController = require('./controllers/categoryController');
 //Sessions
 
 //Use sessions authorization
 app.use('/auth', sessionController);
 // Use transactions controller
 app.use('/transactions', transactionsController);
-
+app.use('/categories', categoryController);
 // Root route to welcome users
 app.get('/', (req, res) => {
     if (req.session.userId) {
@@ -60,19 +61,21 @@ app.get('/dashboard', async (req, res) => {
   }
 
   try {
-      // Fetch the user based on session userId
+      // Assuming you've already defined the User and Transaction models
       const user = await User.findById(req.session.userId);
-      
-      // Fetch transactions associated with the user
-      const transactions = await Transaction.find({ user: req.session.userId }).populate('category');
-      
-      // Pass both user and transactions to the dashboard view
-      res.render('dashboard', { user, transactions });
+      const transactions = await Transaction.find({ user: req.session.userId });
+
+      // Fetch all categories from the database
+      const categories = await Category.find({}); // Adjust this as necessary for your model
+
+      // Pass user, transactions, and categories to the dashboard view
+      res.render('dashboard', { user, transactions, categories });
   } catch (error) {
       console.error("Error fetching dashboard data:", error);
       res.status(500).send("Error loading the dashboard");
   }
 });
+
 
 
 

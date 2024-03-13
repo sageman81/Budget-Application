@@ -10,7 +10,7 @@
     <%- include('partials/header.ejs') %>
 
     <h1>Dashboard</h1>
-    <h2>Welcome, <%- user.name %>!</h2> <!-- Assuming you pass a user object -->
+    <h2>Welcome, <%- user.name %>!</h2> 
 
     <h3>Your Transactions:</h3>
     <ul>
@@ -19,13 +19,23 @@
                 <strong>Description:</strong> <%- transaction.description %>, 
                 <strong>Amount:</strong> $<%- transaction.amount %>,
                 <strong>Date:</strong> <%- transaction.date.toDateString() %>, 
-                <strong>Category:</strong> <%- transaction.category.name %> <!-- Assuming category data is populated -->
+                <strong>Category:</strong> <%- transaction.category.name %> 
             </li>
         <% }); %>
     </ul>
 
-    <a href="/transactions/new">Add New Transaction</a> <!-- Link to add new transaction -->
+    <a href="/transactions/new">Add New Transaction</a> 
+  <!-- Category Management Section -->
+  <h3>Manage Categories:</h3>
+  <!-- Button to Open Modal or Redirect to Category Creation Page -->
+  <button type="button" onclick="window.location.href='/categories/new'">Add New Category</button>
 
+  <!-- Optional: List existing categories if you want to display them -->
+  <ul>
+      <% categories.forEach(function(category) { %>
+          <li><%- category.name %></li>
+      <% }); %>
+  </ul>
     <%- include('partials/footer.ejs') %>
 </body>
 </html>
