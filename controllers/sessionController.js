@@ -101,19 +101,17 @@ router.post('/transactions', async (req, res) => {
 
 
 // Log out the user
-router.get('/logout', (req, res) => {
-    if (req.session) {
-        req.session.destroy(err => {
-            if (err) {
-                res.status(400).send('Unable to log out');
-            } else {
-                res.redirect('/');
-            }
-        });
-    } else {
-        res.end();
-    }
+router.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            // Handle error
+            console.error("Error logging out:", err);
+            return res.redirect('/dashboard'); 
+        }
+        res.redirect('/login');
+    });
 });
+
 
 module.exports = router;
 

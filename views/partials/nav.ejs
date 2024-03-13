@@ -1,28 +1,30 @@
 <header>
-    <h1>Budget App</h1>
-    <nav>
-      <ul>
+  <h1>Budget App</h1>
+  <nav>
+    <ul>
+      
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard">Dashboard</a></li>
+      <li><a href="/about">About us</a></li>
+      <% if(currentUser){ %>
+      <li>Welcome <%= currentUser.username %></li>
+      <li><a href="/transactions/new">Create a New Transaction</a></li>
+      <li><a href="/categories">Manage Categories</a></li>
+      <li><a href="/categories/new">Add New Category</a></li>
+      <li>
         
-        <li><a href="/">Home</a></li>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/about">About us</a></li>
-        <% if(currentUser){ %>
-        <li>Welcome <%= currentUser.username %></li>
-        <li><a href="/transactions/new">Create a New Transaction</a></li>
-        <li><a href="/categories">Manage Categories</a></li>
-        <li><a href="/categories/new">Add New Category</a></li>
-        <li>
-          <form action="/sessions/?_method=DELETE" method="POST">
-            <input type="submit" value="Logout" />
-          </form>
-        </li>
-  
-        <% } else { %>
-        <li><a href="/users/new">Sign Up</a></li>
-        <li><a href="/session/new">Sign In</a></li>
-  
-        <% } %>
-        
-      </ul>
-    </nav>
-  </header>
+        <form action="/logout" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-warning">Logout</button>
+        </form>
+      </li>
+
+      <% } else { %>
+      <li><a href="/users/new">Sign Up</a></li>
+      
+      <li><a href="/session/new">Sign In</a></li>
+
+      <% } %>
+      
+    </ul>
+  </nav>
+</header>

@@ -7,7 +7,7 @@ const mongoose =require('mongoose');
 //Index
 router.get('/', async (req, res) => {
   try {
-      const transactions = await Transaction.find({ user: req.session.userId });
+      const transactions = await Transaction.find({ user: req.session.userId }).populate('category');
       res.render('transactions/index', { transactions }); 
   } catch (error) {
       console.error(error);

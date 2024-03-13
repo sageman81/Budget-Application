@@ -3,17 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget App</title>
+    <title><%= title %></title>
     <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
 </head>
 <body>
-<header>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/login">Login</a>
-        <a href="/signup">Sign Up</a>
-    </nav>
-</header>
+    <header>
+        <h1>Budget App</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <% if(currentUser){ %>
+                    <li>Welcome <%= currentUser.username %></li>
+                    <li><a href="/transactions/new">Create a New Transaction</a></li>
+                    <li><a href="/categories">Manage Categories</a></li>
+                    <li><form action="/logout" method="POST">
+                        <button type="submit">Logout</button>
+                    </form></li>
+                <% } else { %>
+                    <li><a href="/users/new">Sign Up</a></li>
+                    <li><a href="/session/new">Sign In</a></li>
+                <% } %>
+            </ul>
+        </nav>
+    </header>
