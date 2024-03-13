@@ -16,21 +16,32 @@ router.get('/', async (req, res) => {
 });
 
 // New Route
-router.get('/new', (req, res) => {
-  res.render('transactions/new'); // Adjust the path to your views if necessary
+router.get('/new', async (req, res) => {
+  const categories = await Category.find({});
+  res.render('transactions/new', { categories });
 });
 
 
-// Create Route
+// Handle form submission for a new transaction
 router.post('/', async (req, res) => {
+  console.log("Received transaction data:", req.body);
+  const { description, amount, category, date } = req.body;
   try {
-      await Transaction.create(req.body);
+      const newTransaction = await Transaction.create({
+          description,
+          amount,
+          category,
+          date,
+          // Ensure 'user' handling aligns with your application's logic
+      });
       res.redirect('/transactions');
   } catch (error) {
-      console.error(error);
-      res.status(500).send("Error creating transaction");
+      console.error("Error saving transaction:", error);
+      res.status(500).send("Internal Server Error");
   }
 });
+
+
 
 
 // Show Route

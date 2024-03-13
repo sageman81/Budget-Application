@@ -55,18 +55,25 @@ app.get('/', (req, res) => {
 
 // Dashboard Route
 app.get('/dashboard', async (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect('/login');
-    }
+  if (!req.session.userId) {
+      return res.redirect('/login');
+  }
 
-    try {
-        const transactions = await Transaction.find({ user: req.session.userId });
-        res.render('dashboard', { transactions });
-    } catch (error) {
-        console.error("Error fetching transactions:", error);
-        res.status(500).send("Error loading the dashboard");
-    }
+  try {
+      // Fetch the user based on session userId
+      const user = await User.findById(req.session.userId);
+      
+      // Fetch transactions associated with the user
+      const transactions = await Transaction.find({ user: req.session.userId }).populate('category');
+      
+      // Pass both user and transactions to the dashboard view
+      res.render('dashboard', { user, transactions });
+  } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+      res.status(500).send("Error loading the dashboard");
+  }
 });
+
 
 
 
@@ -114,65 +121,65 @@ app.get('/logout', (req, res) => {
 
 
 // Display all categories
-app.get('/categories', async (req, res) => {
-    try {
-      const categories = await Category.find({});
-      res.render('categories/index', { categories }); // Assumes you have a view at /views/categories/index.ejs
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-      res.status(500).send("Error loading categories");
-    }
-  });
+// app.get('/categories', async (req, res) => {
+//     try {
+//       const categories = await Category.find({});
+//       res.render('categories/index', { categories }); // Assumes you have a view at /views/categories/index.ejs
+//     } catch (error) {
+//       console.error("Error fetching categories:", error);
+//       res.status(500).send("Error loading categories");
+//     }
+//   });
   
-  // Display form for adding a new category
-  app.get('/categories/new', (req, res) => {
-    res.render('categories/new'); // Assumes you have a view for adding a new category
-  });
+//   // Display form for adding a new category
+//   app.get('/categories/new', (req, res) => {
+//     res.render('categories/new'); // Assumes you have a view for adding a new category
+//   });
   
-  // Routes for editing and deleting categories
-  // Edit category form
-  app.get('/categories/edit/:id', async (req, res) => {
-    try {
-      const category = await Category.findById(req.params.id);
-      res.render('categories/edit', { category }); // Assumes you have a view for editing a category
-    } catch (error) {
-      console.error("Error finding category:", error);
-      res.status(500).send("Error loading edit form");
-    }
-  });
+//   // Routes for editing and deleting categories
+//   // Edit category form
+//   app.get('/categories/edit/:id', async (req, res) => {
+//     try {
+//       const category = await Category.findById(req.params.id);
+//       res.render('categories/edit', { category }); // Assumes you have a view for editing a category
+//     } catch (error) {
+//       console.error("Error finding category:", error);
+//       res.status(500).send("Error loading edit form");
+//     }
+//   });
   
-  // Update a category
-  app.post('/categories', async (req, res) => {
-    const { name } = req.body;
+//   // Update a category
+//   app.post('/categories', async (req, res) => {
+//     const { name } = req.body;
 
-    // Attempt to find a category with the same name
-    const existingCategory = await Category.findOne({ name: name });
-    if (existingCategory) {
-        // A category with this name already exists, handle as needed
-        return res.status(400).send('A category with this name already exists.');
-    }
+//     // Attempt to find a category with the same name
+//     const existingCategory = await Category.findOne({ name: name });
+//     if (existingCategory) {
+//         // A category with this name already exists, handle as needed
+//         return res.status(400).send('A category with this name already exists.');
+//     }
 
-    try {
-        // No existing category found, proceed with insertion
-        const newCategory = new Category({ name });
-        await newCategory.save();
-        res.redirect('/categories');
-    } catch (error) {
-        console.error("Error adding category:", error);
-        res.status(500).send("An error occurred while adding the category.");
-    }
-});
+//     try {
+//         // No existing category found, proceed with insertion
+//         const newCategory = new Category({ name });
+//         await newCategory.save();
+//         res.redirect('/categories');
+//     } catch (error) {
+//         console.error("Error adding category:", error);
+//         res.status(500).send("An error occurred while adding the category.");
+//     }
+// });
 
-  // Delete a category
-  app.get('/categories/delete/:id', async (req, res) => {
-    try {
-      await Category.findByIdAndRemove(req.params.id);
-      res.redirect('/categories');
-    } catch (error) {
-      console.error("Error deleting category:", error);
-      res.status(500).send("Error deleting category");
-    }
-  });
+//   // Delete a category
+//   app.get('/categories/delete/:id', async (req, res) => {
+//     try {
+//       await Category.findByIdAndRemove(req.params.id);
+//       res.redirect('/categories');
+//     } catch (error) {
+//       console.error("Error deleting category:", error);
+//       res.status(500).send("Error deleting category");
+//     }
+//   });
 
 // Starting the server
 app.listen(PORT, () => {

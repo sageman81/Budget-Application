@@ -1,68 +1,33 @@
-<%- include('partials/header') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <%- include('partials/header.ejs') %>
 
-<h1>Welcome to Your Dashboard!</h1>
+    <h1>Dashboard</h1>
+    <h2>Welcome, <%- user.name %>!</h2> <!-- Assuming you pass a user object -->
 
-<h2>Recent Transactions</h2>
-<ul class="transactions-list">
-    <% if (transactions && transactions.length > 0) { %>
+    <h3>Your Transactions:</h3>
+    <ul>
         <% transactions.forEach(function(transaction) { %>
             <li>
-                <%= transaction.name %> - 
-                <span class="<%= transaction.amount >= 0 ? 'income' : 'expense' %> transaction-amount">
-                    <%= transaction.amount %>
-                </span>
-                <div class="transaction-meta">
-                    <!-- Edit Button -->
-                    <a href="/transactions/edit/<%= transaction._id %>" class="edit-btn">Edit</a>
-                    <!-- Delete Button -->
-                    <form action="/transactions/<%= transaction._id %>?_method=DELETE" method="POST" style="display: inline;">
-                        <button type="submit" class="delete-btn">Delete</button>
-                    </form>
-                </div>
+                <strong>Description:</strong> <%- transaction.description %>, 
+                <strong>Amount:</strong> $<%- transaction.amount %>,
+                <strong>Date:</strong> <%- transaction.date.toDateString() %>, 
+                <strong>Category:</strong> <%- transaction.category.name %> <!-- Assuming category data is populated -->
             </li>
         <% }); %>
-    <% } else { %>
-        <p>No transactions found.</p>
-    <% } %>
-</ul>
+    </ul>
 
-<h2>Add New Transaction</h2>
-<form id="transactionForm">
-    <input type="text" name="name" placeholder="Name" required>
-    <input type="number" name="amount" placeholder="Amount" required>
-    <input type="text" name="category" placeholder="Category" required>
-    <input type="date" name="date" required>
-    <button type="submit">Add Transaction</button>
-</form>
-<div id="message"></div>
+    <a href="/transactions/new">Add New Transaction</a> <!-- Link to add new transaction -->
 
-<%- include('partials/footer') %>
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>
 
-<script>
-document.getElementById('transactionForm').addEventListener('submit', function(e) {
-    e.preventDefault(); 
-
-    const formData = new FormData(this);
-    const data = {};
-    for (let [key, value] of formData.entries()) {
-        data[key] = value;
-    }
-
-    fetch('/transactions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-        credentials: 'include' 
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('message').innerText = 'Transaction added successfully!';
-       
-        window.location.href = '/dashboard';
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-});
-</script>
 
