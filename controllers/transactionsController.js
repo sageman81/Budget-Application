@@ -7,8 +7,8 @@ const mongoose =require('mongoose');
 //Index
 router.get('/', async (req, res) => {
   try {
-      const transactions = await Transaction.find({});
-      res.render('transactions/index', { transactions }); // Adjust the path to your views if necessary
+      const transactions = await Transaction.find({ user: req.session.userId });
+      res.render('transactions/index', { transactions }); 
   } catch (error) {
       console.error(error);
       res.status(500).send("Error retrieving transactions");
@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
           amount,
           category,
           date,
-          // Ensure 'user' handling aligns with your application's logic
+          user: req.session.userId,
       });
       res.redirect('/transactions');
   } catch (error) {
@@ -40,7 +40,6 @@ router.post('/', async (req, res) => {
       res.status(500).send("Internal Server Error");
   }
 });
-
 
 
 

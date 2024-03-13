@@ -99,7 +99,7 @@ const Category = require('../models/category'); // Ensure this path matches your
 // Index - Show all categories
 router.get('/', async (req, res) => {
     try {
-        const categories = await Category.find({});
+        const categories = await Category.find({ userId: req.session.userId });
         res.render('categories/index', { categories }); // Adjust path as necessary
     } catch (error) {
         console.error("Error fetching categories:", error);
@@ -116,11 +116,11 @@ router.get('/new', (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const { name } = req.body;
-        const existingCategory = await Category.findOne({ name: name });
+        const existingCategory = await Category.findOne({ name: name, userId: req.session.userId });
         if (existingCategory) {
             return res.status(400).send('A category with this name already exists.');
         }
-        await Category.create({ name });
+        await Category.create({ name, userId: req.session.userId });
         res.redirect('/categories');
     } catch (error) {
         console.error('Error creating category:', error);
