@@ -6,25 +6,35 @@ Budget-App/
     |-user.controller.js
 |-- models/
 |   |-- user.js
+    |--category.js
 |   |-- transaction.js
+    |--index.js
+    |--seed.js
 |-- views/
+    |-- categories
+        |-index.ejs
+        |--new.ejs
 |   |-- sessions/
 |   |   |-- login.ejs
 |   |   |-- newUser.ejs
 |   |-- transactions/
-|   |   |-- new.ejs
 |   |   |-- edit.ejs
         
 |   |-- partials/
 |   |   |-- header.ejs
 |   |   |-- footer.ejs
         |--nav.ejs
-|   |-- dashboard.ejs
+    |--users
+        |--newUser.ejs
+    |-- dashboard.ejs
 |   |-- budget-home.ejs
-    
 |-- public/
 |   |-- css/
 |   |   |-- styles.css
 |-- .env
 |-- server.js
-
+node_modules
+.env
+.gitignore
+package-lock.json
+ReadMe.md

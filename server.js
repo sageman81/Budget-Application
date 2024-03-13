@@ -5,6 +5,7 @@ const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const bcrypt = require('bcryptjs');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -14,29 +15,43 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Import models
-const { Transaction, User, Category } = require('./models/index');
+const { User, Category, Transaction } = require('./models');
+
 
 // Middleware setup
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
-app.use(express.static('public'));
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: process.env.NODE_ENV === "production" }
 }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
+app.use(express.static('public'));
+
 
 // Setting up EJS as the view engine
 app.set('view engine', 'ejs');
 
+//import controllers
+const transactionsController = require('./controllers/transactionsController');
+const sessionController = require('./controllers/sessionController');
+//Sessions
 
+//Use sessions authorization
+app.use('/auth', sessionController);
+// Use transactions controller
+app.use('/transactions', transactionsController);
 
 // Root route to welcome users
 app.get('/', (req, res) => {
-    res.redirect('/dashboard');
-});
+    if (req.session.userId) {
+      res.redirect('/dashboard');
+    } else {
+      res.redirect('/auth/login');
+    }
+  });
 
 // Dashboard Route
 app.get('/dashboard', async (req, res) => {
@@ -53,8 +68,16 @@ app.get('/dashboard', async (req, res) => {
     }
 });
 
+
+
 // Login and registration routes 
 // GET route for displaying the login form
+
+//Route to signin
+app.get('/signup', (req, res) => {
+    res.render('users/newUser');
+});
+
 app.get('/login', (req, res) => {
     res.render('sessions/login'); 
 });
@@ -66,7 +89,7 @@ app.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({ username });
         if (user && await bcrypt.compare(password, user.password)) {
-            req.session.userId = user._id; // Establishing a session
+            req.session.userId = user._id; // Establishes a session
             res.redirect('/dashboard');
         } else {
             res.status(401).send('Invalid credentials');
@@ -89,88 +112,6 @@ app.get('/logout', (req, res) => {
     });
 });
 
-// Create New Transaction
-// Create New Transaction
-app.post('/transactions', async (req, res) => {
-    let { name, amount, date, category } = req.body;
-  
-    try {
-      // Check if the category is an ObjectId or a new category name
-      if (!ObjectId.isValid(category)) {
-        // Assume category is a new category name. Create a new category document.
-        const newCategory = await Category.create({ name: category });
-        category = newCategory._id;
-      }
-  
-      const newTransaction = new Transaction({ name, amount, date, category, user: req.session.userId });
-      await newTransaction.save();
-      res.redirect('/dashboard');
-    } catch (error) {
-      console.error("Error saving transaction:", error);
-      res.status(400).send('Error saving transaction');
-    }
-  });
-  
-
-
-// Edit Transaction View
-app.get('/transactions/edit/:id', async (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect('/login');
-    }
-
-    try {
-        const transaction = await Transaction.findOne({ _id: req.params.id, user: req.session.userId }).populate('category');
-        const categories = await Category.find({});
-
-        console.log(categories); 
-        
-
-        if (!transaction) {
-            return res.status(404).send('Transaction not found');
-        }
-        res.render('transactions/edit', { transaction, categories });
-    } catch (error) {
-        console.error("Error fetching transaction or categories:", error);
-        res.status(500).send('Error loading edit form');
-    }
-});
-
-
-
-
-// Update Transaction
-app.put('/transactions/:id', async (req, res) => {
-    if (!req.session.userId) {
-        return res.status(401).send('Unauthorized');
-    }
-
-    try {
-        const { id } = req.params;
-        const { name, amount, date, category } = req.body;
-        await Transaction.findOneAndUpdate({ _id: id, user: req.session.userId }, { name, amount, date, category }, { new: true });
-        res.redirect('/dashboard');
-    } catch (error) {
-        console.error("Error updating transaction:", error);
-        res.status(400).send('Error updating transaction');
-    }
-});
-
-// Delete Transaction
-app.delete('/transactions/:id', async (req, res) => {
-    if (!req.session.userId) {
-        return res.status(401).send('Unauthorized');
-    }
-
-    try {
-        const { id } = req.params;
-        await Transaction.findOneAndDelete({ _id: id, user: req.session.userId });
-        res.redirect('/dashboard');
-    } catch (error) {
-        console.error("Error deleting transaction:", error);
-        res.status(400).send('Error deleting transaction');
-    }
-});
 
 // Display all categories
 app.get('/categories', async (req, res) => {
@@ -183,7 +124,6 @@ app.get('/categories', async (req, res) => {
     }
   });
   
-
   // Display form for adding a new category
   app.get('/categories/new', (req, res) => {
     res.render('categories/new'); // Assumes you have a view for adding a new category
@@ -223,10 +163,6 @@ app.get('/categories', async (req, res) => {
     }
 });
 
-
-
-  
-  
   // Delete a category
   app.get('/categories/delete/:id', async (req, res) => {
     try {
@@ -237,9 +173,6 @@ app.get('/categories', async (req, res) => {
       res.status(500).send("Error deleting category");
     }
   });
-  
-
-
 
 // Starting the server
 app.listen(PORT, () => {

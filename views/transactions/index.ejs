@@ -1,0 +1,19 @@
+<%- include('../partials/header') %>
+
+<h1>Transactions</h1>
+
+<ul>
+    <% transactions.forEach(function(transaction) { %>
+        <li>
+            <strong><%= transaction.name %></strong> - $<%= transaction.amount %>
+            [<a href="/transactions/<%= transaction._id %>/edit">Edit</a>]
+            <form action="/transactions/<%= transaction._id %>?_method=DELETE" method="POST" style="display: inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+    <% }); %>
+</ul>
+
+<a href="/transactions/new">Add New Transaction</a>
+
+<%- include('../partials/footer') %>

@@ -1,11 +1,14 @@
+const express = require('express');
 const bcrypt = require('bcrypt');
 const saltRounds = 10; // Define the number of salt rounds for hashing
 const router = require('express').Router();
 const User = require('../models/user'); // Adjust the path as necessary
 const Transaction = require('../models/transaction');
+
+
 // Display the signup form
 router.get('/signup', (req, res) => {
-    res.render('users/newUser'); // Assuming 'newUser.ejs' is in 'views/users/'
+    res.render('users/newUser'); 
 });
 
 // Process the signup form
@@ -113,4 +116,5 @@ router.get('/logout', (req, res) => {
 });
 
 module.exports = router;
+
 
