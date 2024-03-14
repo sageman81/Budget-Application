@@ -19,19 +19,21 @@ const { User, Category, Transaction } = require('./models');
 
 
 // Middleware setup
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === "production" }
-}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: process.env.NODE_ENV === "production" }
+}));
 
 app.use((req, res, next) => {
-  res.locals.title = "Default Title"; 
+  // Default title
+  res.locals.title = "Budget App"; 
+  // Make currentUser available to all templates
   res.locals.currentUser = req.session.user; 
   next();
 });
@@ -40,109 +42,87 @@ app.use((req, res, next) => {
 // Setting up EJS as the view engine
 app.set('view engine', 'ejs');
 
+// Fetch user from database 
+// Use async middleware
+app.use(async (req, res, next) => {
+  if (req.session.userId) {
+      try {
+          const user = await User.findById(req.session.userId);
+          if (user) {
+              res.locals.currentUser = user;
+          } else {
+              // User not found
+              delete req.session.userId;
+          }
+      } catch (error) {
+          console.error('Error fetching user from database', error);
+      }
+  }
+  next();
+});
+
+
+
+
 //import controllers
 const transactionsController = require('./controllers/transactionsController');
 const sessionController = require('./controllers/sessionController');
 const categoryController = require('./controllers/categoryController');
 //Sessions
 
-//Use sessions authorization
+//Use controllers 
 app.use('/auth', sessionController);
-// Use transactions controller
 app.use('/transactions', transactionsController);
-app.use('/categories', categoryController);
-app.use((req, res, next) => {
-  if (req.session.userId) {
-      // Assuming User.findById is asynchronous
-      User.findById(req.session.userId).then(user => {
-          res.locals.currentUser = user;
-          next();
-      }).catch(error => {
-          console.log(error);
-          next();
-      });
-  } else {
-      next();
-  }
-});
+app.use('/categories', categoryController); 
+// if (req.session.userId) {
+//   User.findById(req.session.userId).then(user => {
+//       if (user) {
+//           res.locals.currentUser = user; // Assigning the fetched user object
+//           next();
+//       } else {
+//           // No user found with this ID, handle the case appropriately
+//           console.error('No user found with this ID');
+//           next();
+//       }
+//   }).catch(error => {
+//       console.error('Error fetching user from database', error);
+//       next();
+//   });
+// } else {
+//   next();
+// }
+
 
 
 // Root route to welcome users
 app.get('/', (req, res) => {
-    if (req.session.userId) {
+  if (req.session.userId) {
       res.redirect('/dashboard');
-    } else {
-      res.redirect('/auth/login');
-    }
-  });
+  } else {
+      res.send('Welcome to the Budget App! <a href="/auth/login">Login</a> | <a href="/auth/signup">Sign Up</a>');
+  }
+});
 
-// Dashboard Route
+// // Dashboard Route
 app.get('/dashboard', async (req, res) => {
   if (!req.session.userId) {
-      return res.redirect('/login');
+      return res.redirect('/auth/login');
   }
 
   try {
-      // Assuming you've already defined the User and Transaction models
       const user = await User.findById(req.session.userId);
       const transactions = await Transaction.find({ user: req.session.userId });
-
-      // Fetch all categories from the database
-      const categories = await Category.find({}); // Adjust this as necessary for your model
-
-      // Pass user, transactions, and categories to the dashboard view
-      res.render('dashboard', { user, transactions, categories });
+      // Pass user object to the dashboard view
+      res.render('dashboard', { 
+          title: 'Dashboard', 
+          user, 
+          transactions 
+      });
   } catch (error) {
       console.error("Error fetching dashboard data:", error);
       res.status(500).send("Error loading the dashboard");
   }
 });
-
-
-
-
-
-// Login and registration routes 
-// GET route for displaying the login form
-
-//Route to signin
-// app.get('/signup', (req, res) => {
-//     res.render('users/newUser');
-// });
-
-// app.get('/login', (req, res) => {
-//     res.render('sessions/login'); 
-// });
-
-
-
-// app.post('/login', async (req, res) => {
-//     const { username, password } = req.body;
-//     try {
-//         const user = await User.findOne({ username });
-//         if (user && await bcrypt.compare(password, user.password)) {
-//             req.session.userId = user._id; // Establishes a session
-//             res.redirect('/dashboard');
-//         } else {
-//             res.status(401).send('Invalid credentials');
-//         }
-//     } catch (error) {
-//         console.error("Error during login:", error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// });
-
-
-// // Logout Route
-// app.get('/logout', (req, res) => {
-//     req.session.destroy(err => {
-//         if (err) {
-//             console.error("Error logging out:", err);
-//             return res.redirect('/dashboard');
-//         }
-//         res.redirect('/login');
-//     });
-// });
 
 
 // Starting the server

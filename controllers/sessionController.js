@@ -7,8 +7,8 @@ const Transaction = require('../models/transaction');
 
 
 // Display the signup form
-router.get('/signup', (req, res) => {
-    res.render('users/newUser'); 
+router.get('/signup', (req, res) => {  ///users/new was /signup
+    res.render('users/newUser');   ///changed index to newUser
 });
 
 // Process the signup form
@@ -44,7 +44,7 @@ router.post('/signup', async (req, res) => {
 
 // Display the login form
 router.get('/login', (req, res) => {
-    res.render('sessions/login'); // Assuming 'login.ejs' is in 'views/sessions/'
+    res.render('sessions/login'); 
 });
 
 // Process the login form
@@ -78,9 +78,8 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Example of a route to create a new transaction
+//route to create a new transaction
 router.post('/transactions', async (req, res) => {
-    // Assuming you receive description, amount, category, and user from the request body
     const { description, amount, category, user } = req.body;
   
     try {
@@ -88,7 +87,7 @@ router.post('/transactions', async (req, res) => {
         description,
         amount,
         category,
-        user, // This could be req.session.userId if you're associating transactions with users
+        user, 
       });
   
       const savedTransaction = await newTransaction.save();
@@ -102,16 +101,17 @@ router.post('/transactions', async (req, res) => {
 
 // Log out the user
 router.post('/logout', (req, res) => {
+    console.log("Attempting to log out");
     req.session.destroy(err => {
         if (err) {
-            // Handle error
             console.error("Error logging out:", err);
-            return res.redirect('/dashboard'); 
+            res.status(500).send("Error logging out");
+        } else {
+            console.log("Logged out successfully");
+            res.redirect('/auth/login');
         }
-        res.redirect('/login');
     });
 });
-
 
 module.exports = router;
 
