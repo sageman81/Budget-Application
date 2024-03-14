@@ -1,131 +1,118 @@
-/* public/styles.css */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-
-    .header, .footer {
-        padding: 0.5em;
-    }
-}
-
+/* General settings */
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #EAEDED;
+    color: #333;
 }
 
 .container {
-    max-width: 800px;
+    width: 90%;
+    max-width: 1200px;
     margin: 20px auto;
+    background-color: #fff;
     padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Header and footer */
 .header, .footer {
     text-align: center;
-    padding: 1em;
-    background-color: #f3f3f3;
+    padding: 20px 10px;
+    background-color: #004165; /* Dark Blue */
+    color: #ffffff;
+}
+
+.header {
+    margin-bottom: 20px;
+    border-radius: 10px 10px 0 0;
+}
+
+.footer {
+    margin-top: 20px;
+    border-radius: 0 0 10px 10px;
+}
+
+/* Buttons */
+.button-primary, .button-danger, .edit-btn, .delete-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
 .button-primary {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
+    background-color: #007BFF; /* Blue */
 }
 
-.button-danger {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-}
-
-.button-primary:hover, .button-danger:hover {
-    opacity: 0.8;
-}
-
-input[type="text"], input[type="password"], input[type="number"], input[type="date"] {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-form {
-    margin: 20px 0;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.transactions-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-.transactions-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #eee;
-    padding: 10px 15px;
-}
-
-.transactions-list li:hover {
-    background-color: #f0f0f0;
-}
-
-.transaction-amount {
-    font-weight: bold;
-}
-
-.income {
-    color: #4CAF50;
-}
-
-.expense {
-    color: #F44336;
-}
-
-.transaction-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.transaction-meta a, .transaction-meta form {
-    display: inline-block;
-}
-
-.edit-btn, .delete-btn {
-    padding: 5px 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    text-decoration: none;
-    color: white;
+.button-danger, .delete-btn {
+    background-color: #dc3545; /* Red */
 }
 
 .edit-btn {
-    background-color: #FFC107;
+    background-color: #FFC107; /* Amber */
 }
 
-.delete-btn {
-    background-color: #F44336;
+.button-primary:hover, .button-danger:hover, .edit-btn:hover, .delete-btn:hover {
+    opacity: 0.9;
 }
 
-.delete-btn:hover {
-    background-color: #d32f2f;
+/* Form styling */
+input[type="text"], input[type="password"], input[type="number"], input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
-.edit-btn:hover {
-    background-color: #ffb300;
+.form-group {
+    margin-bottom: 1em;
 }
+
+/* Transaction list */
+.transactions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.transactions-list li {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.transaction-amount.income {
+    color: #28a745; /* Green */
+}
+
+.transaction-amount.expense {
+    color: #dc3545; /* Red */
+}
+
+.transaction-meta a, .transaction-meta form {
+    margin: 0 5px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .header, .footer {
+        padding: 15px;
+    }
+}
+

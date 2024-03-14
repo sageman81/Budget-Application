@@ -1,19 +1,16 @@
 <%- include('../partials/header') %>
 
-<h1>Transaction Details</h1>
 
-<div class="transaction-details">
-  <h2><%= transaction.name %></h2>
-  <p>Amount: <%= transaction.amount %></p>
-  <p>Category: <%= transaction.category.name %></p> 
-  <p>Date: <%= transaction.date.toISOString().substring(0, 10) %></p>
-</div>
+  <li>
+      <strong>Description:</strong> <%- transaction.description %>, 
+      <strong>Amount:</strong> $<%- transaction.amount %>,
+      <strong>Date:</strong> <%- transaction.date.toDateString() %>, 
+      <strong>Category:</strong> <%- transaction.category.name %>
+      
+    
+  </li>
 
-<a href="/transactions/<%= transaction._id %>/edit">Edit</a>
-<form action="/transactions/<%= transaction._id %>?_method=DELETE" method="post">
-  <button type="submit">Delete</button>
-</form>
 
-<a href="/transactions">Back to Transactions</a>
+
 
 <%- include('../partials/footer') %>

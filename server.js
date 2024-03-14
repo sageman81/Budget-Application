@@ -27,8 +27,12 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: process.env.NODE_ENV === "production" }
+  cookie: {
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+  }
 }));
+
 
 app.use((req, res, next) => {
   // Default title
@@ -74,24 +78,6 @@ const categoryController = require('./controllers/categoryController');
 app.use('/auth', sessionController);
 app.use('/transactions', transactionsController);
 app.use('/categories', categoryController); 
-// if (req.session.userId) {
-//   User.findById(req.session.userId).then(user => {
-//       if (user) {
-//           res.locals.currentUser = user; // Assigning the fetched user object
-//           next();
-//       } else {
-//           // No user found with this ID, handle the case appropriately
-//           console.error('No user found with this ID');
-//           next();
-//       }
-//   }).catch(error => {
-//       console.error('Error fetching user from database', error);
-//       next();
-//   });
-// } else {
-//   next();
-// }
-
 
 
 // Root route to welcome users

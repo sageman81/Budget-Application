@@ -14,7 +14,7 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/dashboard">Dashboard</a></li>
                 <% if(currentUser){ %>
-                    <li>Welcome <%= currentUser.username %></li>
+
                     <li><a href="/transactions/new">Create a New Transaction</a></li>
                     <li><a href="/categories">Manage Categories</a></li>
                     <li><form action="/logout" method="POST">     

@@ -8,6 +8,8 @@ const mongoose =require('mongoose');
 router.get('/', async (req, res) => {
   try {
       const transactions = await Transaction.find({ user: req.session.userId }).populate('category');
+      console.log(JSON.stringify(transactions, null, 2));//new line of code 
+      
       res.render('transactions/index', { transactions }); 
   } catch (error) {
       console.error(error);
@@ -44,10 +46,21 @@ router.post('/', async (req, res) => {
 
 
 // Show Route
+// router.get('/:id', async (req, res) => {
+//   try {
+//       const transaction = await Transaction.findOne({ _id: req.params.id });
+//       res.render('transactions/show', { transaction }); 
+//   } catch (error) {
+//       console.error(error);
+//       res.status(500).send("Error finding transaction");
+//   }
+// });
+// Show Route
 router.get('/:id', async (req, res) => {
   try {
-      const transaction = await Transaction.findOne({ _id: req.params.id });
-      res.render('transactions/show', { transaction }); // Adjust the path to your views if necessary
+      const transaction = await Transaction.findById(req.params.id).populate('category');
+      // Ensure 'transaction' is passed correctly to the view
+      res.render('transactions/show', { transaction }); // Make sure 'transaction' here matches your EJS file
   } catch (error) {
       console.error(error);
       res.status(500).send("Error finding transaction");
