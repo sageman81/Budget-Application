@@ -84,15 +84,32 @@ router.get('/:id/edit', async (req, res) => {
 
 
 // Update Route
+// router.put('/:id', async (req, res) => {
+//   try {
+//       await Transaction.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+//       res.redirect(`/transactions/${req.params.id}`);
+//   } catch (error) {
+//       console.error(error);
+//       res.status(500).send("Error updating transaction");
+//   }
+// });
 router.put('/:id', async (req, res) => {
+  const { description, amount, category, date } = req.body;
   try {
-      await Transaction.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
-      res.redirect(`/transactions/${req.params.id}`);
+    const updatedTransaction = await Transaction.findByIdAndUpdate(req.params.id, {
+      description,
+      amount,
+      category,
+      date
+    }, { new: true });
+
+    res.redirect(`/transactions/${updatedTransaction._id}`);
   } catch (error) {
-      console.error(error);
-      res.status(500).send("Error updating transaction");
+    console.error(error);
+    res.status(500).send("Error updating transaction");
   }
 });
+
 
 
 // Delete Route

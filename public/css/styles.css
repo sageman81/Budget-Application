@@ -1,118 +1,157 @@
-/* General settings */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Reset some default browser styles */
+body, h1, h2, h3, p, form, ul, li {
     margin: 0;
     padding: 0;
-    background-color: #EAEDED;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
     color: #333;
+    line-height: 1.6;
+    padding: 20px;
 }
 
 .container {
     width: 90%;
     max-width: 1200px;
-    margin: 20px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    overflow: hidden;
 }
 
-/* Header and footer */
 .header, .footer {
-    text-align: center;
-    padding: 20px 10px;
-    background-color: #004165; /* Dark Blue */
+    background-color: #004d40;
     color: #ffffff;
-}
-
-.header {
+    text-align: center;
+    padding: 1em 0;
     margin-bottom: 20px;
-    border-radius: 10px 10px 0 0;
 }
 
-.footer {
-    margin-top: 20px;
-    border-radius: 0 0 10px 10px;
+.header h1 {
+    font-size: 2.5em; /* Increase font size */
+    margin-bottom: 0.5em; /* Add some space below the text */
+    color: #e0f2f1; /* Light color for contrast against the dark background */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
 }
 
-/* Buttons */
-.button-primary, .button-danger, .edit-btn, .delete-btn {
-    padding: 10px 20px;
+
+.footer p {
+    margin: 0;
+}
+
+nav ul {
+    list-style: none;
+    background-color: #00796b;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 15px 20px;
+    display: inline-block;
+}
+
+nav ul li a:hover, nav ul li a:focus {
+    background-color: #004d40;
+}
+
+.button, .button-primary, .button-danger {
+    display: inline-block;
+    background-color: #26a69a;
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    color: #fff;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
 }
 
-.button-primary {
-    background-color: #007BFF; /* Blue */
+.button:hover, .button-primary:hover, .button-danger:hover {
+    background-color: #00796b;
 }
 
-.button-danger, .delete-btn {
-    background-color: #dc3545; /* Red */
+.button-danger {
+    background-color: #ee6e73;
 }
 
-.edit-btn {
-    background-color: #FFC107; /* Amber */
-}
-
-.button-primary:hover, .button-danger:hover, .edit-btn:hover, .delete-btn:hover {
-    opacity: 0.9;
-}
-
-/* Form styling */
-input[type="text"], input[type="password"], input[type="number"], input[type="date"] {
-    width: 100%;
+.input-field {
+    width: calc(100% - 22px);
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+    border-radius: 3px;
 }
 
 .form-group {
     margin-bottom: 1em;
 }
 
-/* Transaction list */
 .transactions-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
 }
 
 .transactions-list li {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
+    border-bottom: 1px solid #eee;
+    padding: 20px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
-.transaction-amount.income {
-    color: #28a745; /* Green */
+.transactions-list li:last-child {
+    border-bottom: none;
 }
 
-.transaction-amount.expense {
-    color: #dc3545; /* Red */
+.transaction-amount {
+    font-weight: bold;
+    font-size: 1.2em;
 }
 
-.transaction-meta a, .transaction-meta form {
-    margin: 0 5px;
+.income {
+    color: #388e3c;
 }
 
-@media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
+.expense {
+    color: #d32f2f;
+}
 
+.logout-btn {
+    background-color: #ff5252; /* Bright red color for attention */
+    color: white; /* White text for readability */
+    padding: 10px 20px; /* Adequate padding for a larger click area */
+    border-radius: 20px; /* Rounded corners for a modern look */
+    border: none; /* Remove default border */
+    cursor: pointer; /* Cursor changes to a hand icon on hover */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transition for background color and slight raise effect */
+}
+
+.logout-btn:hover {
+    background-color: #ff1744; /* Darker shade of red on hover */
+    transform: translateY(-2px); /* Slightly raise the button on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
+}
+
+
+
+/* Adjustments for small devices */
+@media (max-width: 600px) {
     .header, .footer {
-        padding: 15px;
+        padding: 0.5em;
+    }
+    
+    nav ul li a {
+        padding: 10px;
     }
 }
 
