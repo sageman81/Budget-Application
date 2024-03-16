@@ -31,8 +31,9 @@ router.post('/signup', async (req, res) => {
         });
 
         // Set user information in the session
-        // req.session.userId = newUser._id;
+        req.session.userId = newUser._id;
         // req.session.username = newUser.username;
+        //req.session.currentUser = newUser;
         req.session.currentUser = newUser;
         console.log(newUser);
         // Redirect to the dashboard or another appropriate page
@@ -67,7 +68,7 @@ router.post('/login', async (req, res) => {
         if (isMatch) {
             // Set user information in the session
             req.session.currentUser = foundUser; // Update to use only currentUser
-
+            
             // Redirect to the dashboard
             res.redirect('/dashboard');
         } else {
