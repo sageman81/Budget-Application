@@ -82,7 +82,7 @@ app.get('/', (req, res) => {
 
 // Dashboard Route
 app.get('/dashboard', async (req, res) => {
-  console.log(req.session)
+  console.log(Object.keys(req.session))
   if (!req.session.currentUser) {
       return res.redirect('/auth/login');
   }
