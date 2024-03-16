@@ -34,10 +34,19 @@ router.post('/signup', async (req, res) => {
         req.session.userId = newUser._id;
         // req.session.username = newUser.username;
         //req.session.currentUser = newUser;
-        req.session.currentUser = newUser;
-        console.log(newUser);
+        req.session.currentUser = newUser; // Assuming newUser is your user object
+req.session.save(err => {
+  if(err) {
+    // handle error
+    console.error('Session save error:', err);
+    res.status(500).send('Internal Server Error');
+  } else {
+    res.redirect('/dashboard');
+  }
+});
+        //console.log(newUser);
         // Redirect to the dashboard or another appropriate page
-         res.redirect('/dashboard');
+         //res.redirect('/dashboard');
         //res.send('newUser')
     } catch (error) {
         console.error("Error during sign up:", error);
