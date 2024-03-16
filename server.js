@@ -36,7 +36,7 @@ app.use(session({
 
 app.use((req, res, next) => {
   res.locals.title = "Budget App"; 
-  res.locals.currentUser = req.session.user; 
+  res.locals.userId = req.session.user; 
   next();
 });
 
@@ -90,7 +90,7 @@ app.get('/', (req, res) => {
 
 // // Dashboard Route
 app.get('/dashboard', async (req, res) => {
-  if (!req.session.currentUser) {
+  if (!req.session.userId) {
       return res.redirect('/auth/login');
   }
 

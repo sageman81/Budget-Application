@@ -33,6 +33,7 @@ router.post('/signup', async (req, res) => {
         // Set user information in the session
         req.session.userId = newUser._id;
         req.session.username = newUser.username;
+        req.session.currentUser = newUser;
 
         // Redirect to the dashboard or another appropriate page
         res.redirect('/dashboard');
