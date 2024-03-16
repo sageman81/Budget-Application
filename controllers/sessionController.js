@@ -36,7 +36,8 @@ router.post('/signup', async (req, res) => {
         req.session.currentUser = newUser;
 
         // Redirect to the dashboard or another appropriate page
-        res.redirect('/dashboard');
+        // res.redirect('/dashboard');
+        res.send('newuser')
     } catch (error) {
         console.error("Error during sign up:", error);
         res.status(500).send('Error signing up.');
