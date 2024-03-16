@@ -1,26 +1,25 @@
 <%- include('../partials/header') %>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Category List</title>
-    <link rel="stylesheet" href="/css/styles.css"> 
-</head>
-<body>
-    <h1>Categories</h1>
+<div class="container">
+    <h1>Manage Categories</h1>
+    <!-- Link to Add New Category -->
+    <a href="/categories/new" class="button">Add New Category</a>
+
     <ul>
         <% categories.forEach(function(category) { %>
             <li>
                 <%= category.name %>
-                <!-- Link to Edit Form -->
-                <a href="/categories/<%= category._id %>/edit">Edit</a>
+                <!-- Link to Show Category -->
+                <a href="/categories/<%= category._id %>" class="button">View</a>
+                <!-- Link to Edit Category -->
+                <a href="/categories/<%= category._id %>/edit" class="button">Edit</a>
                 <!-- Delete Button -->
                 <form action="/categories/<%= category._id %>?_method=DELETE" method="post" style="display:inline;">
-                    <button type="submit">Delete</button>
+                    <button type="submit" class="button-danger">Delete</button>
                 </form>
             </li>
         <% }); %>
     </ul>
-</body>
-</html>
+</div>
+
 <%- include('../partials/footer') %>

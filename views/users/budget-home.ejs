@@ -1,0 +1,48 @@
+<style>
+.home-container {
+    text-align: center; 
+    padding: 50px 20px; 
+    background-color: #00796b;
+    color: #ffffff; /
+}
+
+.home-container h1 {
+    margin-bottom: 20px; 
+    font-size: 2.5rem; 
+}
+
+.home-container p {
+    margin-bottom: 40px; 
+    font-size: 1.2rem; 
+}
+
+.home-container .button {
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    font-size: 1.1rem; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    margin: 0 10px; 
+    background-color: white;
+    transition: background-color 0.3s; 
+}
+
+.home-container .button:hover {
+    background-color: #005f5f; 
+}
+
+</style>
+
+
+<div class="container home-container">
+    <h1>Welcome to the Budget App!</h1>
+    <p>Track your expenses and manage your finances with ease.</p>
+    <div>
+        <a href="/auth/login" class="button">Login</a>
+        <a href="/auth/signup" class="button">Sign Up</a>
+    </div>
+</div>
+<%- include('../partials/footer') %>
+
+
+
+

@@ -14,12 +14,14 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/dashboard">Dashboard</a></li>
                 <% if(currentUser){ %>
-
                     <li><a href="/transactions/new">Create a New Transaction</a></li>
                     <li><a href="/categories">Manage Categories</a></li>
-                    <li><form action="/auth/logout" method="POST">     
-                        <button type="submit">Logout</button>
-                    </form></li>
+                
+                    <li>
+                        <form action="/auth/logout" method="POST" style="display: inline;">
+                            <a href="#" onclick="this.closest('form').submit()" class="nav-link">Logout</a>
+                        </form>
+                    </li>
                 <% } else { %>
                     <li><a href="/users/new">Sign Up</a></li>
                     <li><a href="/session/new">Sign In</a></li>
@@ -27,3 +29,4 @@
             </ul>
         </nav>
     </header>
+

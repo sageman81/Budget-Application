@@ -81,13 +81,22 @@ app.use('/categories', categoryController);
 
 
 // Root route to welcome users
+// app.get('/', (req, res) => {
+//   if (req.session.userId) {
+//       res.redirect('/dashboard');
+//   } else {
+//       res.send('Welcome to the Budget App! <a href="/auth/login">Login</a> | <a href="/auth/signup">Sign Up</a>');
+//   }
+// });
 app.get('/', (req, res) => {
   if (req.session.userId) {
-      res.redirect('/dashboard');
+    res.redirect('/dashboard');
   } else {
-      res.send('Welcome to the Budget App! <a href="/auth/login">Login</a> | <a href="/auth/signup">Sign Up</a>');
+    res.render('users/budget-home'); 
   }
 });
+
+
 
 // // Dashboard Route
 app.get('/dashboard', async (req, res) => {

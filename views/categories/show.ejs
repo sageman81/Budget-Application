@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Details</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <%- include('../partials/header') %>
+    <div class="container">
+        <h1>Category Details</h1>
+        <div class="category-details">
+            <p>Name: <%= category.name %></p>
+        </div>
+        <div class="category-actions">
+           
+            <a href="/categories/<%= category._id %>/edit" class="button">Edit Category</a>
+            
+            
+            <form action="/categories/<%= category._id %>?_method=DELETE" method="post">
+                <button type="submit" class="button-danger">Delete Category</button>
+            </form>
+        </div>
+        <a href="/categories" class="button">Back to Categories</a>
+    </div>
+    <%- include('../partials/footer') %>
+</body>
+</html>
