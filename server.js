@@ -35,9 +35,7 @@ app.use(session({
 
 
 app.use((req, res, next) => {
-  // Default title
   res.locals.title = "Budget App"; 
-  // Make currentUser available to all templates
   res.locals.currentUser = req.session.user; 
   next();
 });
@@ -55,7 +53,6 @@ app.use(async (req, res, next) => {
           if (user) {
               res.locals.currentUser = user;
           } else {
-              // User not found
               delete req.session.userId;
           }
       } catch (error) {
@@ -72,7 +69,7 @@ app.use(async (req, res, next) => {
 const transactionsController = require('./controllers/transactionsController');
 const sessionController = require('./controllers/sessionController');
 const categoryController = require('./controllers/categoryController');
-//Sessions
+
 
 //Use controllers 
 app.use('/auth', sessionController);
@@ -80,14 +77,7 @@ app.use('/transactions', transactionsController);
 app.use('/categories', categoryController); 
 
 
-// Root route to welcome users
-// app.get('/', (req, res) => {
-//   if (req.session.userId) {
-//       res.redirect('/dashboard');
-//   } else {
-//       res.send('Welcome to the Budget App! <a href="/auth/login">Login</a> | <a href="/auth/signup">Sign Up</a>');
-//   }
-// });
+
 app.get('/', (req, res) => {
   if (req.session.userId) {
     res.redirect('/dashboard');

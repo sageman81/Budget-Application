@@ -44,23 +44,11 @@ router.post('/', async (req, res) => {
 });
 
 
-
-// Show Route
-// router.get('/:id', async (req, res) => {
-//   try {
-//       const transaction = await Transaction.findOne({ _id: req.params.id });
-//       res.render('transactions/show', { transaction }); 
-//   } catch (error) {
-//       console.error(error);
-//       res.status(500).send("Error finding transaction");
-//   }
-// });
 // Show Route
 router.get('/:id', async (req, res) => {
   try {
       const transaction = await Transaction.findById(req.params.id).populate('category');
-      // Ensure 'transaction' is passed correctly to the view
-      res.render('transactions/show', { transaction }); // Make sure 'transaction' here matches your EJS file
+      res.render('transactions/show', { transaction }); 
   } catch (error) {
       console.error(error);
       res.status(500).send("Error finding transaction");
@@ -81,18 +69,6 @@ router.get('/:id/edit', async (req, res) => {
   }
 });
 
-
-
-// Update Route
-// router.put('/:id', async (req, res) => {
-//   try {
-//       await Transaction.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
-//       res.redirect(`/transactions/${req.params.id}`);
-//   } catch (error) {
-//       console.error(error);
-//       res.status(500).send("Error updating transaction");
-//   }
-// });
 router.put('/:id', async (req, res) => {
   const { description, amount, category, date } = req.body;
   try {

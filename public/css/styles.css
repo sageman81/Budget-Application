@@ -1,4 +1,4 @@
-/* Reset and global styles */
+
 body, h1, h2, h3, p, form, ul, li {
     margin: 0;
     padding: 0;
@@ -20,9 +20,9 @@ body {
     overflow: hidden;
 }
 
-/* Header and footer styles */
+
 .header, .footer {
-    background-color: #025e73; /* Darker shade for more contrast */
+    background-color: #025e73; 
     color: #ffffff;
     text-align: center;
     padding: 1em 0;
@@ -30,17 +30,17 @@ body {
 }
 
 .header h1 {
-    font-size: 2.8em; /* Slightly larger for emphasis */
+    font-size: 2.8em; 
     margin-bottom: 0.5em;
     color: #e0f2f1;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
 }
 
 .footer p {
     margin: 0;
 }
 
-/* Navigation styles */
+
 nav ul {
     list-style: none;
     background-color: #00796b;
@@ -65,7 +65,6 @@ nav ul li a:hover, .nav-link:hover {
     background-color: #004d40;
 }
 
-/* Button styles */
 .button, .button-primary, .button-danger, .logout-btn {
     background-color: #26a69a;
     color: #fff;
@@ -85,7 +84,7 @@ nav ul li a:hover, .nav-link:hover {
     background-color: #ee6e73;
 }
 
-/* Input and form group styles */
+
 .input-field, select {
     width: 100%;
     padding: 10px;
@@ -98,7 +97,7 @@ nav ul li a:hover, .nav-link:hover {
     margin-bottom: 1em;
 }
 
-/* Transactions list styles */
+
 .transactions-list {
     margin-top: 20px;
     background-color: #fff;
@@ -130,38 +129,38 @@ nav ul li a:hover, .nav-link:hover {
     color: #d32f2f;
 }
 
-/* Adjust logout button appearance */
+
 .logout-btn {
-    background-color: #ff5252; /* Updated for consistency with other buttons */
+    background-color: #ff5252; 
     border-radius: 20px;
     padding: 10px 20px;
-    font-size: 1em; /* Adjust font size for better readability */
+    font-size: 1em; 
 }
 
-/* Container for each category item */
+
 .category-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem; /* Increase bottom margin for more space */
-    padding: 1rem; /* Increase padding for more space inside each item */
+    margin-bottom: 2rem; 
+    padding: 1rem; 
     background-color: #f9f9f9;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Container for actions (edit/delete) */
+
 .category-actions {
     display: flex;
-    gap: 20px; /* Increase gap between buttons */
+    gap: 20px; 
 }
 
-/* Style for action links/buttons */
+
 .category-actions a, .category-actions form button {
     display: inline-block;
     background-color: #007bff;
     color: white;
-    padding: 10px 15px; /* Increase padding for larger buttons */
+    padding: 10px 15px; 
     text-align: center;
     text-decoration: none;
     border: none;
@@ -183,45 +182,35 @@ nav ul li a:hover, .nav-link:hover {
     background-color: #c82333;
 }
 
-/* Ensure list items have more space */
+
 ul {
-    list-style-type: none; /* Removes default list bullet points */
-    padding: 0; /* Resets default padding */
+    list-style-type: none; 
+    padding: 0; 
 }
 
 li {
-    margin-bottom: 1.5rem; /* Adds space between list items */
+    margin-bottom: 1.5rem;
 }
 
-/* Style for the 'Add New Category' button or link */
 .add-category-btn {
     display: inline-block;
-    margin-bottom: 2rem; /* Adds space below the button/link */
-    /* Other styling properties */
+    margin-bottom: 2rem; 
+    
 }
 
-/* Alternatively, if you want to add margin to the top of the categories list instead */
 ul {
-    margin-top: 2rem; /* Adds space above the first category item */
-    /* Existing styles */
+    margin-top: 2rem; 
+   
 }
 
-/* Assuming your 'Manage Categories' title is an <h1> */
 h1 {
-    margin-bottom: 3rem; /* Increase the bottom margin to create more space */
-    /* Other styling properties */
+    margin-bottom: 3rem; 
 }
 
-/* If your title has a specific class, e.g., .categories-title, use that class instead */
 .categories-title {
-    margin-bottom: 3rem; /* Adjust the value as needed */
+    margin-bottom: 3rem; 
 }
 
-
-
-
-
-/* Responsive adjustments */
 @media (max-width: 600px) {
     .header, .footer {
         padding: 0.5em;
