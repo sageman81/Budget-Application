@@ -33,27 +33,27 @@ app.use(session({
   }
 }));
 
-
 app.use((req, res, next) => {
   res.locals.title = "Budget App"; 
-  res.locals.userId = req.session.user; 
+  if (req.session.currentUser) {
+    res.locals.currentUser = req.session.currentUser; // Reflect currentUser in local variables for views
+  }
   next();
 });
-
 
 // Setting up EJS as the view engine
 app.set('view engine', 'ejs');
 
 // Fetch user from database 
-// Use async middleware
+// Use async middleware to refresh currentUser if present
 app.use(async (req, res, next) => {
-  if (req.session.userId) {
+  if (req.session.currentUser) {
       try {
-          const user = await User.findById(req.session.userId);
+          const user = await User.findById(req.session.currentUser._id);
           if (user) {
-              res.locals.currentUser = user;
+              res.locals.currentUser = user; // Update currentUser in local variables for views
           } else {
-              delete req.session.userId;
+              delete req.session.currentUser; // Remove invalid currentUser session
           }
       } catch (error) {
           console.error('Error fetching user from database', error);
@@ -62,41 +62,33 @@ app.use(async (req, res, next) => {
   next();
 });
 
-
-
-
-//import controllers
+// Import controllers
 const transactionsController = require('./controllers/transactionsController');
 const sessionController = require('./controllers/sessionController');
 const categoryController = require('./controllers/categoryController');
 
-
-//Use controllers 
+// Use controllers 
 app.use('/auth', sessionController);
 app.use('/transactions', transactionsController);
 app.use('/categories', categoryController); 
 
-
-
 app.get('/', (req, res) => {
-  if (req.session.userId) {
+  if (req.session.currentUser) {
     res.redirect('/dashboard');
   } else {
     res.render('users/budget-home'); 
   }
 });
 
-
-
-// // Dashboard Route
+// Dashboard Route
 app.get('/dashboard', async (req, res) => {
-  if (!req.session.userId) {
+  if (!req.session.currentUser) {
       return res.redirect('/auth/login');
   }
 
   try {
-      const user = await User.findById(req.session.userId);
-      const transactions = await Transaction.find({ user: req.session.userId });
+      const user = await User.findById(req.session.currentUser._id);
+      const transactions = await Transaction.find({ user: req.session.currentUser._id });
       // Pass user object to the dashboard view
       res.render('dashboard', { 
           title: 'Dashboard', 
@@ -108,7 +100,6 @@ app.get('/dashboard', async (req, res) => {
       res.status(500).send("Error loading the dashboard");
   }
 });
-
 
 // Starting the server
 app.listen(PORT, () => {
