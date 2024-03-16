@@ -88,3 +88,10 @@ bcrypt.js: A library to help hash passwords. In this application, bcrypt.js is u
 express-session: A middleware for Express.js that enables session management. It stores session data on the server and allows the application to maintain state across requests. This project uses express-session to handle user authentication and session management, ensuring that users can interact with their personalized data securely.
 CSS provides the basic style definitions for the application's UI.
 By leveraging these technologies, the budget tracking application offers a seamless and secure experience for managing personal finances, allowing users to add, view, edit, and delete transaction records associated with their accounts.
+
+
+
+Citations:
+
+Chat GPT debugging, authorization issues, and CSS references.
+Stack Overflow: 
