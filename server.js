@@ -90,7 +90,7 @@ app.get('/', (req, res) => {
 
 // // Dashboard Route
 app.get('/dashboard', async (req, res) => {
-  if (!req.session.userId) {
+  if (!req.session.currentUser) {
       return res.redirect('/auth/login');
   }
 
