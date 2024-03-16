@@ -46,21 +46,21 @@ app.set('view engine', 'ejs');
 
 // Fetch user from database 
 // Use async middleware to refresh currentUser if present
-app.use(async (req, res, next) => {
-  if (req.session.currentUser) {
-      try {
-          const user = await User.findById(req.session.currentUser._id);
-          if (user) {
-              res.locals.currentUser = user; // Update currentUser in local variables for views
-          } else {
-              delete req.session.currentUser; // Remove invalid currentUser session
-          }
-      } catch (error) {
-          console.error('Error fetching user from database', error);
-      }
-  }
-  next();
-});
+// app.use(async (req, res, next) => {
+//   if (req.session.currentUser) {
+//       try {
+//           const user = await User.findById(req.session.currentUser._id);
+//           if (user) {
+//               res.locals.currentUser = user; // Update currentUser in local variables for views
+//           } else {
+//               delete req.session.currentUser; // Remove invalid currentUser session
+//           }
+//       } catch (error) {
+//           console.error('Error fetching user from database', error);
+//       }
+//   }
+//   next();
+// });
 
 // Import controllers
 const transactionsController = require('./controllers/transactionsController');
